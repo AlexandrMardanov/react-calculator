@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import sortDoctypes from '../utils/sortDoctypes'
+
+import sortDoctypes from '../../utils/sortDoctypes'
 
 import Select from 'react-select'
 import '../react-select.scss'

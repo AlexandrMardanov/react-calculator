@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Loader from './Loader'
-import Doctypes from './Doctypes'
-import NumPages from './NumPages'
-import NumPapers from './NumPapers'
-import Urgency from './Urgency'
-import Subjects from './Subjects'
-import Levels from './Levels'
-import Currency from './Currency'
-import Total from './Total'
-import Proceed from './Proceed'
-import Promo from './Promo'
-import DiscountText from './DiscountText'
-import getCookie from '../utils/getCookie'
+
+import Loader from '../components/Loader'
+import Doctypes from '../components/Doctypes'
+import NumPages from '../components/NumPages'
+import NumPapers from '../components/NumPapers'
+import Urgency from '../components/Urgency'
+import Subjects from '../components/Subjects'
+import Levels from '../components/Levels'
+import Currency from '../components/Currency'
+import Total from '../components/Total'
+import Proceed from '../components/Proceed'
+import Promo from '../components/Promo'
+import DiscountText from '../components/DiscountText'
+
+import getCookie from '../../utils/getCookie'
 
 class Calculator extends Component {
     static propTypes = {
@@ -28,7 +30,7 @@ class Calculator extends Component {
             getPageLabels: PropTypes.object.isRequired,
             getSpecialPrices: PropTypes.object.isRequired
         }),
-        api: PropTypes.object
+        api: PropTypes.array
     }
 
     state = {
@@ -49,45 +51,43 @@ class Calculator extends Component {
     }
 
     componentDidMount = () => {
-        this.props.api.then(data => {
-            this.API = {
-                doctypes: data[0].result,
-                urgencies: data[1].result,
-                prices: data[2].result,
-                levels: data[3].result,
-                limits: data[4].result,
-                currencyRates: data[5].result,
-                subjects: data[6].result,
-                isAuthorized: data[7].result,
-                getDefaultValues: data[8].result,
-                getFirstTimePromoCodes: data[9].result
-            }
+        this.API = {
+            doctypes: this.props.api[0].result,
+            urgencies: this.props.api[1].result,
+            prices: this.props.api[2].result,
+            levels: this.props.api[3].result,
+            limits: this.props.api[4].result,
+            currencyRates: this.props.api[5].result,
+            subjects: this.props.api[6].result,
+            isAuthorized: this.props.api[7].result,
+            getDefaultValues: this.props.api[8].result,
+            getFirstTimePromoCodes: this.props.api[9].result
+        }
 
-            const promoDiscount = this.API.getFirstTimePromoCodes[0].value
-            const defaultCurrency = this.API.getDefaultValues.defaultCurrency
+        const promoDiscount = this.API.getFirstTimePromoCodes[0].value
+        const defaultCurrency = this.API.getDefaultValues.defaultCurrency
+
+        this.setState({
+            doctype: this.props.config.defaultDoctype,
+            currency: getCookie('currency') || defaultCurrency,
+            discount: (this.state.promoChecked && !this.API.isAuthorized)
+                ? (100 - promoDiscount) / 100
+                : 1
+        }, () => {
+            const { doctype, currency } = this.state
 
             this.setState({
-                doctype: this.props.config.defaultDoctype,
-                currency: getCookie('currency') || defaultCurrency,
-                discount: (this.state.promoChecked && !this.API.isAuthorized)
-                    ? (100 - promoDiscount) / 100
-                    : 1
+                urgency: +this.API.urgencies[doctype][0].id,
+                level: +this.API.levels[doctype][0].id,
+                currencySign: this.props.config.currencySignes[currency]
             }, () => {
-                const { doctype, currency } = this.state
+                const { doctype, level, urgency } = this.state
 
                 this.setState({
-                    urgency: +this.API.urgencies[doctype][0].id,
-                    level: +this.API.levels[doctype][0].id,
-                    currencySign: this.props.config.currencySignes[currency]
+                    price: +this.API.prices[doctype][level][urgency],
+                    numPagesLimit: +this.API.limits[doctype][level][urgency]
                 }, () => {
-                    const { doctype, level, urgency } = this.state
-
-                    this.setState({
-                        price: +this.API.prices[doctype][level][urgency],
-                        numPagesLimit: +this.API.limits[doctype][level][urgency]
-                    }, () => {
-                        this.setState({ loading: false })
-                    })
+                    this.setState({ loading: false })
                 })
             })
         })

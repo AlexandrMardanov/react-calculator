@@ -31,33 +31,14 @@ export const commonConfig = {
         currencyLabel: ''
     },
     discountFromUSDCents: 3000,
-    getDoctypeIdsWithoutDiscount: [125, 222, 126, 142],
-    getDoctypeIdsWithoutCategory: [152, 163, 217, 182, 174],
+    getDoctypeIdsWithoutDiscount: [1],
+    getDoctypeIdsWithoutCategory: [2],
     getPageLabels: {
-        51: 'Slide',
-        125: 'Question',
-        126: 'Question',
-        182: 'Assignment',
-        222: 'Question',
-        234: 'Math problem',
-        235: 'Math problem',
-        260: 'Map',
-        261: 'Assignment',
-        262: 'Assignment'
+        1: 'Slide',
+        2: 'Question'
     },
-    getDoctypeIdsWithPapers: [142, 143, 144, 145, 223],
+    getDoctypeIdsWithPapers: [2],
     getSpecialPrices: {
-        65: { value: 10, type: 1 },
-        67: { value: 10, type: 1 },
-        70: { value: 10, type: 1 },
-        71: { value: 10, type: 1 },
-        72: { value: 10, type: 1 },
-        73: { value: 10, type: 1 },
-        75: { value: 10, type: 1 },
-        77: { value: 10, type: 1 },
-        125: { value: 10, type: 1 },
-        126: { value: 10, type: 1 },
-        136: { value: 10, type: 1 },
-        139: { value: 15, type: 2 } /* type: 2 => % */
+        2: { value: 10, type: 1 }
     }
 }
