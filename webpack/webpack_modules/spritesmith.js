@@ -13,8 +13,8 @@ export default () => ({
                 glob: '**/*_sprite.png'
             },
             target: {
-                image: resolve('src', 'components', 'spritesmith', 'sprite.png'),
-                css: resolve('src', 'components', 'spritesmith', 'sprite.scss')
+                image: resolve('src', 'spritesmith', 'sprite.png'),
+                css: resolve('src', 'spritesmith', 'sprite.scss')
             },
             spritesmithOptions: {
                 padding: 10

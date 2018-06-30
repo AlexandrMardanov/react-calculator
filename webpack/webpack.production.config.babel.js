@@ -21,7 +21,7 @@ export default () => merge([
             path: resolve('build'),
             filename: 'js/[name].[contenthash:6].bundle.js',
             chunkFilename: 'js/[name].[contenthash:6].bundle.js',
-            publicPath: '/'
+            publicPath: ''
         },
         stats: {
             chunks: false,
