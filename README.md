@@ -1,4 +1,4 @@
 # react-calculator
 
 ### Demo
-https://alexmardanov.github.io/react-calculator/build/
+https://alexandrmardanov.github.io/react-calculator/build/
